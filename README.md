@@ -1,0 +1,1 @@
+Scrapes job information from job sites.
