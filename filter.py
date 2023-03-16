@@ -6,6 +6,9 @@ headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5
 
 def filter_jobs(states):
     drop_rows = []
+    remote_rows = []
+    remote_status = []
+    status = ""
     df = pd.read_csv('linkedin-jobs.csv', sep=',')
     df.reset_index()
     for row in df.itertuples():
@@ -22,14 +25,17 @@ def filter_jobs(states):
                 continue
             if "remote" in description or "Remote" in description:
                 if "hybrid" in description or "Hybrid" in description:
-                    print("Not fully remote")
+                    status = "Not fully remote"
                 else:
                     if "office" in description or "Office" in description:
-                        print("Potentially not remote")
+                        status = "Potentially not remote"
                     else:
-                        print("Remote")
-                print(row.link)
-                print()
+                        status = "Remote"
+                remote_rows.append(row.Index)
+                remote_status.append(status)
+    # new_df = df.copy().iloc[remote_rows, :] 
+    # new_df.loc[:, ["remote"]] = remote_status
+    # new_df.to_csv("remote-linkedin-jobs.csv", index=False, encoding='utf-8')
 
     # df_copy = df.copy()
     # for i in range(len(drop_rows) - 1, -1, -1):
